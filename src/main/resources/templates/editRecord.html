@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Record</title>
+    <script th:inline="javascript">
+        let alertBox = [[${session.alertBox}]];
+        if (alertBox) {
+            alert(alertBox);
+        }
+        alertBox = "";
+    </script>
+</head>
+<body>
+
+<form method="post" th:action="@{save}">
+    <label for="transactionid">Transaction Number</label>
+    <input id="transactionid" name="id" readonly="readonly" th:value="${customer.getId()}" type="number">
+    <div>
+        <label for="seatcode">Seat Code: </label>
+        <input id="seatcode" name="seatno" required="required" th:value="${customer.seatno}" type="text"/>
+
+        <label for="name">Customer Name: </label>
+        <input id="name" name="name" required="required" th:value="${customer.name}" type="text"/>
+    </div>
+    <div>
+        <label for="date">Transaction Date: </label>
+        <input id="date" name="tdate" required="required" th:value="${customer.tdate }" type="date"/>
+    </div>
+
+    <button type="submit">Save</button>
+</form>
+</body>
+</html>

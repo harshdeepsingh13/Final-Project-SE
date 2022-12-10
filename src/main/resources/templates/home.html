@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<script th:inline="javascript">
+    let alertBox = [[${session.alertBox}]];
+    if (alertBox) {
+        alert(alertBox);
+    }
+    alertBox = "";
+</script>
+
+<style>
+    body {
+        text-align: center;
+    }
+
+    table {
+        margin: auto;
+        padding: 15px 0;
+    }
+
+    th, td {
+        padding: 10px 20px;
+    }
+
+    button {
+        margin: 10px 0;
+    }
+
+    div {
+        margin: 5px 0;
+    }
+</style>
+<body style="background-color: aqua">
+
+<h1>Seat Reservation System</h1>
+
+<table>
+    <tr>
+        <th>A</th>
+        <th>B</th>
+        <th>C</th>
+        <th>D</th>
+        <th>E</th>
+    </tr>
+    <tr>
+        <td th:text="${reservedSeats.containsKey('1A')}? ${reservedSeats.get('1A')} : '1A'"></td>
+        <td th:text="${reservedSeats.containsKey('1B')}? ${reservedSeats.get('1B')} : '1B'"></td>
+        <td th:text="${reservedSeats.containsKey('1C')}? ${reservedSeats.get('1C')} : '1C'"></td>
+        <td th:text="${reservedSeats.containsKey('1D')}? ${reservedSeats.get('1D')} : '1D'"></td>
+        <td th:text="${reservedSeats.containsKey('1E')}? ${reservedSeats.get('1E')} : '1E'"></td>
+
+    </tr>
+    <tr>
+        <td th:text="${reservedSeats.containsKey('2A')}? ${reservedSeats.get('2A')} : '2A'"></td>
+        <td th:text="${reservedSeats.containsKey('2B')}? ${reservedSeats.get('2B')} : '2B'"></td>
+        <td th:text="${reservedSeats.containsKey('2C')}? ${reservedSeats.get('2C')} : '2C'"></td>
+        <td th:text="${reservedSeats.containsKey('2D')}? ${reservedSeats.get('2D')} : '2D'"></td>
+        <td th:text="${reservedSeats.containsKey('2E')}? ${reservedSeats.get('2E')} : '2E'"></td>
+    </tr>
+    <tr>
+        <td th:text="${reservedSeats.containsKey('3A')}? ${reservedSeats.get('3A')} : '3A'"></td>
+        <td th:text="${reservedSeats.containsKey('3B')}? ${reservedSeats.get('3B')} : '3B'"></td>
+        <td th:text="${reservedSeats.containsKey('3C')}? ${reservedSeats.get('3C')} : '3C'"></td>
+        <td th:text="${reservedSeats.containsKey('3D')}? ${reservedSeats.get('3D')} : '3D'"></td>
+        <td th:text="${reservedSeats.containsKey('3E')}? ${reservedSeats.get('3E')} : '3E'"></td>
+    </tr>
+    <tr>
+        <td th:text="${reservedSeats.containsKey('4A')}? ${reservedSeats.get('4A')} : '4A'"></td>
+        <td th:text="${reservedSeats.containsKey('4B')}? ${reservedSeats.get('4B')} : '4B'"></td>
+        <td th:text="${reservedSeats.containsKey('4C')}? ${reservedSeats.get('4C')} : '4C'"></td>
+        <td th:text="${reservedSeats.containsKey('4D')}? ${reservedSeats.get('4D')} : '4D'"></td>
+        <td th:text="${reservedSeats.containsKey('4E')}? ${reservedSeats.get('4E')} : '4E'"></td>
+    </tr>
+</table>
+
+<h2 th:text="${remainingSeats}"></h2>
+
+<div>
+    <form method="post" th:action="@{reserve}">
+        <div>
+            <label for="seatcode">Seat Code: </label>
+            <input id="seatcode" name="seatno" required="required" th:value="${customer.seatno}" type="text"/>
+
+            <label for="name">Customer Name: </label>
+            <input id="name" name="name" required="required" th:value="${customer.name}" type="text"/>
+        </div>
+        <div>
+            <label for="date">Transaction Date: </label>
+            <input id="date" name="tdate" required="required" th:value="${customer.tdate }" type="date"/>
+        </div>
+
+        <button type="submit">Reserve</button>
+    </form>
+</div>
+
+<div style="background-color: black; color: white">
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Transaction Code</th>
+            <th>Date</th>
+            <th>Seat Number</th>
+            <th>Name</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="p:${listCustomers}">
+            <td th:text="${p.getId()}"></td>
+            <td th:text="${p.getTdate()}"></td>
+            <td th:text="${p.getSeatno()}"></td>
+            <td th:text="${p.getName()}"></td>
+            <td>
+                <a
+                        onclick="return confirm('Are you sure you want to delete the record?')"
+                        style="background-color: darkred; color: white"
+                        th:href="@{delete(id=${p.id})}"
+                >
+                    Delete
+                </a>
+            </td>
+            <td>
+                <a style="background-color: green; color: white"
+                   th:href="@{editRecord(id=${p.id})}"
+                >
+                    Edit
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    console.log(new Date().toISOString().split("T")[0]);
+    const date = new Date(new Date().setDate(new Date().getDate() - 1));
+    document.getElementById("date").min = date.toISOString().split("T")[0];
+    document.getElementById("date").value = date.toISOString().split("T")[0];
+</script>
+
+</body>
+</html>
